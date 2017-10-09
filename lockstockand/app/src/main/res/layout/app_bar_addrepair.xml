@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="matthewsware.lockstockandbarrell.addRepair">
+    tools:context="matthewsware.lockstockandbarrell.addrepair">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_add_repair" />
+    <include layout="@layout/content_addrepair" />
 
 
 </android.support.design.widget.CoordinatorLayout>

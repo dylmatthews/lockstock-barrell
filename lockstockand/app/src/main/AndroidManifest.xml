@@ -3,8 +3,8 @@
     package="matthewsware.lockstockandbarrell">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -23,8 +23,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".addRepair"
-            android:label="@string/title_activity_add_repair"
+            android:name=".signup"
+            android:label="@string/title_activity_signup"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".addrepair"
+            android:label="@string/title_activity_addrepair"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

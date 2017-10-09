@@ -8,4 +8,5 @@
     <string name="title_activity_add_repair">addRepair</string>
     <string name="title_activity_signup">signup</string>
     <string name="title_activity_addrepair">addrepair</string>
+    <string name="title_activity_view_repairs">viewRepairs</string>
 </resources>

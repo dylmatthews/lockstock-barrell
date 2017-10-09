@@ -293,6 +293,9 @@ public class addrepair extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
 
         } else if (id == R.id.nav_gallery) {
+            startActivity(new Intent(getApplicationContext(), viewRepairs.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
 
         } else if (id == R.id.nav_slideshow) {
 

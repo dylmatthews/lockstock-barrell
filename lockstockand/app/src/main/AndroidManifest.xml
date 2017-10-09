@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="matthewsware.lockstockandbarrell">
 
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -29,6 +28,10 @@
         <activity
             android:name=".addrepair"
             android:label="@string/title_activity_addrepair"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".viewRepairs"
+            android:label="@string/title_activity_view_repairs"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -119,7 +119,7 @@ public class signup extends AppCompatActivity
 
 
 
-            
+
             if (mUser != null) {
                 final String email = mUser.getEmail();
                 final String name = mUser.getDisplayName();

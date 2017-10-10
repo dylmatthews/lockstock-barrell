@@ -155,9 +155,15 @@ public class login extends AppCompatActivity
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
 
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_ViewRepairs) {
+            startActivity(new Intent(getApplicationContext(), viewRepairs.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_repairs_date) {
+            startActivity(new Intent(getApplicationContext(), searchDateRepair.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
 
         } else if (id == R.id.nav_manage) {
 

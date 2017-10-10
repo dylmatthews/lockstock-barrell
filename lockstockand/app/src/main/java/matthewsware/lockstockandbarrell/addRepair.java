@@ -38,6 +38,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class addrepair extends AppCompatActivity
@@ -53,8 +54,8 @@ public class addrepair extends AppCompatActivity
     private DatabaseReference mRef;
     private StorageReference storageReference;
     private Uri file=null;
-    ImageView imageView;
-    Button btnCamera;
+    private ImageView imageView;
+    private Button btnCamera;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,6 +216,10 @@ public class addrepair extends AppCompatActivity
         final String numberItems = etNumItems.getText().toString();
         final String cost = etCost.getText().toString();
         final String cellNumber = etCell.getText().toString();
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+       final String date = df.format(c.getTime());
+        Toast.makeText(this, "Date" + date, Toast.LENGTH_SHORT).show();
 
         if (!(name.isEmpty() || repair.isEmpty() || numberItems.isEmpty() || cost.isEmpty() || cellNumber.isEmpty())) {
             DatabaseReference newpost = mRef.push();
@@ -225,6 +230,7 @@ public class addrepair extends AppCompatActivity
             newpost.child("cost").setValue(cost);
             newpost.child("cellphone").setValue(cellNumber);
             newpost.child("image").setValue(file.getLastPathSegment());
+            newpost.child("date").setValue(date);
 
 
             StorageReference repairs = storageReference.child("repairs");
@@ -292,12 +298,15 @@ public class addrepair extends AppCompatActivity
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
 
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_ViewRepairs) {
             startActivity(new Intent(getApplicationContext(), viewRepairs.class));
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_repairs_date) {
+            startActivity(new Intent(getApplicationContext(), searchDateRepair.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
 
         } else if (id == R.id.nav_manage) {
 

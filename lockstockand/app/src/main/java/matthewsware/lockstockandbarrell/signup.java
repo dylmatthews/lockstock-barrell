@@ -1,10 +1,12 @@
 package matthewsware.lockstockandbarrell;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -39,6 +41,8 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Locale;
 
 public class signup extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -181,6 +185,33 @@ public class signup extends AppCompatActivity
             imageUri = data.getData();
             imageButton.setImageURI(imageUri);
         }
+
+       else  if (requestCode==100&& resultCode==RESULT_OK && data!=null)
+        {
+            ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            etName.setText(result.get(0));
+        }
+    }
+
+    public void onSpeechToText(View view)
+    {
+        promtSpeechInput();
+    }
+
+    private void promtSpeechInput() {
+
+        Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        i.putExtra(RecognizerIntent.EXTRA_PROMPT, "Say your name");
+
+        try {
+            startActivityForResult(i, 100);
+        }
+        catch (ActivityNotFoundException a)
+        {
+            Toast.makeText(this, "You'r phone doesn't support voice to text", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onSignUp(View view)
@@ -307,9 +338,15 @@ public class signup extends AppCompatActivity
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
 
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_ViewRepairs) {
+            startActivity(new Intent(getApplicationContext(), viewRepairs.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_repairs_date) {
+            startActivity(new Intent(getApplicationContext(), searchDateRepair.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
 
         } else if (id == R.id.nav_manage) {
 

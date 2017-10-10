@@ -1,5 +1,6 @@
 package matthewsware.lockstockandbarrell;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -9,7 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -63,6 +67,34 @@ public class viewRepairs extends AppCompatActivity
             }
         });
 
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                repairs item = (repairs) parent.getItemAtPosition(position);
+                ImageView imageView = (ImageView) view.findViewById(R.id.grid_item_image);
+                Intent intent = new Intent(viewRepairs.this, scrollViewRepair.class);
+                int[] screenLocation = new int[2];
+                imageView.getLocationOnScreen(screenLocation);
+
+
+                intent.putExtra("left", screenLocation[0]).
+                        putExtra("top", screenLocation[1]).
+                        putExtra("width", imageView.getWidth()).
+                        putExtra("height", imageView.getHeight()).
+                        putExtra("image", item.getImgUrl())
+                        .putExtra("name", item.getName())
+                        .putExtra("cellphone",item.getCellphone())
+                        .putExtra("cost" ,item.getCost())
+                        .putExtra("date" , item.getDate())
+                        .putExtra("image", item.getImgUrl())
+                        .putExtra("numberItems", item.getNumberItems())
+                        .putExtra("repair", item.getRepair())
+                        .putExtra("repairOther", item.getRepairOther());
+
+                startActivity(intent);
+            }
+        });
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -100,6 +132,7 @@ public class viewRepairs extends AppCompatActivity
                 String numItems = ds.get(i).child("numberItems").getValue().toString();
                 String repair = ds.get(i).child("repair").getValue().toString();
                 String repairOther =  ds.get(i).child("repairOther").getValue().toString();
+                String date =ds.get(i).child("date").getValue().toString();
 
 
                 item.setCost(cost);
@@ -109,8 +142,9 @@ public class viewRepairs extends AppCompatActivity
                 item.setNumberItems(numItems);
                 item.setRepair(repair);
                 item.setRepairOther(repairOther);
+                item.setDate(date);
 
-                repairs rep = new repairs(cost,cellphone,image,name,numItems,repair,repairOther);
+                repairs rep = new repairs(date,cost,cellphone,image,name,numItems,repair,repairOther);
 
                 mGridAdapter.add(rep);
 
@@ -148,18 +182,35 @@ public class viewRepairs extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_addRepair) {
 
-        } else if (id == R.id.nav_slideshow) {
+            startActivity(new Intent(getApplicationContext(), addrepair.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_ViewRepairs) {
+            startActivity(new Intent(getApplicationContext(), viewRepairs.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_repairs_date) {
+            startActivity(new Intent(getApplicationContext(), searchDateRepair.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }else if (id == R.id.nav_repairs_date) {
+            startActivity(new Intent(getApplicationContext(), searchDateRepair.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_login) {
+            startActivity(new Intent(getApplicationContext(), login.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
 
+        } else if (id == R.id.nav_signUp) {
+            startActivity(new Intent(getApplicationContext(), signup.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

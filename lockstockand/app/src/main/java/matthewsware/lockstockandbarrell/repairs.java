@@ -13,6 +13,7 @@ public class repairs {
     private String cost;
     private String cellphone;
     private String imgUrl;
+    private String date;
 
     public repairs ()
     {
@@ -21,7 +22,7 @@ public class repairs {
 
 
 
-    public repairs(String cost, String cellphone, String image, String name, String numItems, String repair, String repairOther) {
+    public repairs(String date,String cost, String cellphone, String image, String name, String numItems, String repair, String repairOther) {
         this.cellphone = cellphone;
         this.cost = cost;
         this.imgUrl = image;
@@ -29,8 +30,17 @@ public class repairs {
         this.name = name;
         this.repair = repair;
         this.repairOther = repairOther;
+        this.date = date;
 
 
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getCellphone() {

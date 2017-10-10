@@ -168,8 +168,8 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:background="@android:color/holo_red_dark"
-                android:textColor="@android:color/white"
+                android:background="@color/button"
+                android:textColor="@color/text"
                 android:text="Open Camera"
                 />
 

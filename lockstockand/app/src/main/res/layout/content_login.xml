@@ -63,31 +63,33 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <Button
-        android:text="Login With saved data"
-        android:background="@color/colorAccent"
-        android:textColor="@color/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="33dp"
-        android:id="@+id/btnLoginSaved"
-        android:onClick="onLoginSaved"
-        android:layout_below="@+id/input_layout_password"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+
 
     <Button
         android:text="Login"
         android:background="@color/colorAccent"
-        android:textColor="#ffffff"
+        android:textColor="@color/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnLogin"
         android:onClick="onLogin"
-        android:layout_below="@+id/btnLoginSaved"
+        android:layout_below="@+id/btnEmailSpeech"
         android:layout_alignParentStart="true"
         android:layout_marginTop="15dp"
         android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_password"
+        android:background="@color/colorAccent"
+        android:textColor="@color/text"
+        android:id="@+id/btnEmailSpeech"
+        android:text="Say email"
+        android:onClick="onSayEmail"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
+
 
     <Button
         android:text="Sign Up"

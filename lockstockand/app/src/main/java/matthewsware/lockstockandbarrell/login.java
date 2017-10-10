@@ -2,6 +2,7 @@ package matthewsware.lockstockandbarrell;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,12 +21,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Locale;
+
 public class login extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseAuth mAuth;
     private EditText etEmail;
     private EditText etPassword;
     final String TAG = "Login";
+    TextToSpeech toSpeech;
+    int result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,20 @@ public class login extends AppCompatActivity
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
 
+        toSpeech = new TextToSpeech(login.this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status==TextToSpeech.SUCCESS)
+                {
+                    result = toSpeech.setLanguage(Locale.UK);
+                }
+                else
+                {
+                    Toast.makeText(login.this, "This isn't available on your phone", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -46,6 +65,20 @@ public class login extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void onSayEmail(View view)
+    {
+        if(result==TextToSpeech.LANG_MISSING_DATA || result ==TextToSpeech.LANG_NOT_SUPPORTED)
+        {
+            Toast.makeText(this, "This isn't available on your phone", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            String text = etEmail.getText().toString();
+            toSpeech.speak(text,TextToSpeech.QUEUE_FLUSH,null);
+
+        }
+
     }
 
     public void onLogin(View view)

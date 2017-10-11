@@ -134,7 +134,7 @@ public class searchCellphone extends AppCompatActivity
         }
         catch (Exception e)
         {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
 

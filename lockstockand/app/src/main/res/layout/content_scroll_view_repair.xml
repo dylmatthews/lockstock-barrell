@@ -6,12 +6,14 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="matthewsware.lockstockandbarrell.scrollViewRepair"
-    tools:showIn="@layout/activity_scroll_view_repair">
+    tools:showIn="@layout/activity_scroll_view_repair"
+    android:background="@color/colorBackground">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:text="@string/large_text" />
-
+        android:id="@+id/tvMessage"
+        android:textColor="@color/text"
+        android:text=""/>
 </android.support.v4.widget.NestedScrollView>

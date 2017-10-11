@@ -4,16 +4,19 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,8 +30,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -38,6 +44,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -51,11 +58,13 @@ public class addrepair extends AppCompatActivity
     private FirebaseUser mUser;
     private ImageView profilepic;
     private FirebaseDatabase mData;
-    private DatabaseReference mRef;
+    private DatabaseReference mRef, refTicketNum;
+   private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private StorageReference storageReference;
     private Uri file=null;
     private ImageView imageView;
     private Button btnCamera;
+    private int ticketNum =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +75,7 @@ public class addrepair extends AppCompatActivity
 
         mData = FirebaseDatabase.getInstance();
         mRef= mData.getReference("repairs");
+        refTicketNum = mData.getReference();
         mAuth = FirebaseAuth.getInstance();
 
         etName = (EditText) findViewById(R.id.etName);
@@ -77,6 +87,26 @@ public class addrepair extends AppCompatActivity
         etCell = (EditText) findViewById(R.id.etNumber);
         btnCamera = (Button) findViewById(R.id.btnCamera);
         storageReference = FirebaseStorage.getInstance().getReference();
+
+        refTicketNum  = database.getReference("ticket number");
+        refTicketNum.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //  Toast.makeText(foundAnimal.this, dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+                Log.i("shitTest", "shitTest");
+                //    Toast.makeText(viewRepairs.this, dataSnapshot.toString(), Toast.LENGTH_SHORT).show();
+                showData(dataSnapshot);
+
+                //  Toast.makeText(foundAnimal.this, dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.i("shitTest", "shitTest");
+            }
+        });
+
+
 
 
 
@@ -152,7 +182,7 @@ public class addrepair extends AppCompatActivity
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         // Handle failed download
-                        Toast.makeText(addrepair.this, "Download failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(addrepair.this, "Download User Profile Pic failed", Toast.LENGTH_SHORT).show();
                         // ...
                     }
                 });
@@ -170,6 +200,37 @@ public class addrepair extends AppCompatActivity
         }
     }
 
+    private void showData(DataSnapshot dataSnapshot) {
+
+        try{
+            Iterable<DataSnapshot> lstSnapshots = dataSnapshot.getChildren();
+            ArrayList<DataSnapshot> ds = new ArrayList<>();
+            for (DataSnapshot dataSnapshot1 : lstSnapshots) {
+                //Toast.makeText(this, dataSnapshot1.toString(), Toast.LENGTH_SHORT).show();
+                ds.add(dataSnapshot1);
+
+            }
+
+            for(int  i = ds.size() - 1; i >= 0; i--) {
+
+                try{
+                ticketNum = Integer.parseInt(ds.get(i).child("ticket number").getValue().toString());
+                ticketNum++;}
+                catch (Exception e)
+                {
+                    Toast.makeText(this, " shit " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            Toast.makeText(this, "Problem reading ticket number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -180,9 +241,48 @@ public class addrepair extends AppCompatActivity
         }
     }
 
+    private boolean isSMSPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.SEND_SMS)
+                    == PackageManager.PERMISSION_GRANTED) {
+                sendSMS();
+                Log.v("TAG","Permission is granted");
+                return true;
+            } else {
+
+                Log.v("TAG","Permission is revoked");
+                ActivityCompat.requestPermissions(addrepair.this, new String[]{android.Manifest.permission.SEND_SMS}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("TAG","Permission is granted");
+            return true;
+        }
+    }
+
+    private void sendSMS() {
+
+        String phone = etCell.getText().toString();
+        if (phone.contains("+27")) {
+
+        } else {
+            phone = "+27" + phone.substring(1);
+        }
+
+        String mess="Your repair was added";
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(phone, null, mess , null, null);
+        Toast.makeText(this, "Sms has been sent", Toast.LENGTH_SHORT).show();
+
+
+    }
+
+
+
     private static File getOutputMediaFile() {
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "Demo");
+                Environment.DIRECTORY_PICTURES), "Lock Stock");
 
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
@@ -201,7 +301,7 @@ public class addrepair extends AppCompatActivity
             }
             imageView.setImageURI(file);
         }
-        Toast.makeText(getApplicationContext(), "Your Image has been saved in Demo Gallery", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Your Image has been saved in Lock Stock", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -231,6 +331,8 @@ public class addrepair extends AppCompatActivity
             newpost.child("cellphone").setValue(cellNumber);
             newpost.child("image").setValue(file.getLastPathSegment());
             newpost.child("date").setValue(date);
+            newpost.child("ticketnum").setValue(ticketNum);
+            refTicketNum.child("ticket number").setValue(ticketNum);
 
 
             StorageReference repairs = storageReference.child("repairs");
@@ -253,6 +355,7 @@ public class addrepair extends AppCompatActivity
                             // Get a URL to the uploaded content
                             // Uri downloadUrl = taskSnapshot.getDownloadUrl();
                             Toast.makeText(addrepair.this, "Insert was successful", Toast.LENGTH_SHORT).show();
+                    isSMSPermissionGranted();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -292,6 +395,7 @@ public class addrepair extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+
         if (id == R.id.nav_addRepair) {
 
             startActivity(new Intent(getApplicationContext(), addrepair.class));
@@ -307,8 +411,22 @@ public class addrepair extends AppCompatActivity
             startActivity(new Intent(getApplicationContext(), searchDateRepair.class));
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
+        }else if (id == R.id.nav_name_search) {
+            startActivity(new Intent(getApplicationContext(), nameSearch.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else if(id==R.id.nav_phone_search) {
+            startActivity(new Intent(getApplicationContext(), searchCellphone.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
 
-        } else if (id == R.id.nav_manage) {
+        } else if(id==R.id.nav_ticket_search)
+        {
+            startActivity(new Intent(getApplicationContext(), searchTicket.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+
 
         } else if (id == R.id.nav_login) {
             startActivity(new Intent(getApplicationContext(), login.class));
@@ -320,7 +438,6 @@ public class addrepair extends AppCompatActivity
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         }
-
 
         return true;
     }

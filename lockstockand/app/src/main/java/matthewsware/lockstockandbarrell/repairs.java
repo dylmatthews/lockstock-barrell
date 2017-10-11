@@ -14,6 +14,7 @@ public class repairs {
     private String cellphone;
     private String imgUrl;
     private String date;
+    private String ticketNum;
 
     public repairs ()
     {
@@ -22,7 +23,7 @@ public class repairs {
 
 
 
-    public repairs(String date,String cost, String cellphone, String image, String name, String numItems, String repair, String repairOther) {
+    public repairs(String ticketNum,String date,String cost, String cellphone, String image, String name, String numItems, String repair, String repairOther) {
         this.cellphone = cellphone;
         this.cost = cost;
         this.imgUrl = image;
@@ -31,8 +32,17 @@ public class repairs {
         this.repair = repair;
         this.repairOther = repairOther;
         this.date = date;
+        this.ticketNum = ticketNum;
 
 
+    }
+
+    public String getTicketNum() {
+        return ticketNum;
+    }
+
+    public void setTicketNum(String ticketNum) {
+        this.ticketNum = ticketNum;
     }
 
     public String getDate() {

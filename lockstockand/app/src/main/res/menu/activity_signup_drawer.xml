@@ -15,9 +15,18 @@
             android:icon="@mipmap/ic_date_range_black_24dp"
             android:title="Search Repairs By Date" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_name_search"
+            android:icon="@mipmap/ic_text_format_black_24dp"
+            android:title="Search Name" />
+        <item
+            android:id="@+id/nav_phone_search"
+            android:icon="@mipmap/ic_smartphone_black_24dp"
+            android:title="Search Cellphone" />
+        <item
+            android:id="@+id/nav_ticket_search"
+            android:icon="@mipmap/ic_confirmation_number_black_24dp"
+            android:title="Search Cellphone" />
+
     </group>
 
     <item android:title="Login/Sign Up">

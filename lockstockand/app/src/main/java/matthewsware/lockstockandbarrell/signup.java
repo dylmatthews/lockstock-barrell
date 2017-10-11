@@ -332,6 +332,7 @@ public class signup extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+
         if (id == R.id.nav_addRepair) {
 
             startActivity(new Intent(getApplicationContext(), addrepair.class));
@@ -347,8 +348,22 @@ public class signup extends AppCompatActivity
             startActivity(new Intent(getApplicationContext(), searchDateRepair.class));
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
+        }else if (id == R.id.nav_name_search) {
+            startActivity(new Intent(getApplicationContext(), nameSearch.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else if(id==R.id.nav_phone_search) {
+            startActivity(new Intent(getApplicationContext(), searchCellphone.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
 
-        } else if (id == R.id.nav_manage) {
+        } else if(id==R.id.nav_ticket_search)
+        {
+            startActivity(new Intent(getApplicationContext(), searchTicket.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+
 
         } else if (id == R.id.nav_login) {
             startActivity(new Intent(getApplicationContext(), login.class));

@@ -2,7 +2,9 @@ package matthewsware.lockstockandbarrell;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,15 +19,24 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,8 +54,13 @@ public class searchDateRepair extends AppCompatActivity
     private GridView mGridView;
     private repairsArray mGridAdapter;
     private ArrayList<repairs> mGridData;
-    private FirebaseAuth mAuth;
+
     FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+    private TextView tvEmail , tvName;
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+    private ImageView profilepic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +71,7 @@ public class searchDateRepair extends AppCompatActivity
 
         etDate = (EditText) findViewById(R.id.etDate);
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        mAuth = FirebaseAuth.getInstance();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -72,7 +89,67 @@ public class searchDateRepair extends AppCompatActivity
         mGridAdapter = new repairsArray(this, R.layout.activity_view_repairs);
 
         mGridView.setAdapter(mGridAdapter);
-      
+
+        try {
+
+            View header = navigationView.getHeaderView(0);
+
+            tvEmail = (TextView) header.findViewById(R.id.tvEmail);
+            tvName = (TextView) header.findViewById(R.id.tvName);
+            profilepic = (ImageView) header.findViewById(R.id.iwProfilePic);
+            mUser = mAuth.getCurrentUser();
+
+            if (mUser != null) {
+                final String email = mUser.getEmail();
+                final String name = mUser.getDisplayName();
+                tvEmail.setText(email);
+
+                //
+                tvName.setText(name);
+
+
+                StorageReference imgRef = FirebaseStorage.getInstance().getReference("profile pics/" + mUser.getPhotoUrl().toString());
+
+
+                File localFile = null;
+                try {
+                    localFile = File.createTempFile("images", "jpg");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                final File finalLocalFile = localFile;
+                imgRef.getFile(localFile)
+                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                // Successfully downloaded data to local file
+
+                                profilepic.setImageURI(Uri.fromFile(finalLocalFile));
+                                // ...
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle failed download
+                        Toast.makeText(searchDateRepair.this, "Download User Profile Pic failed", Toast.LENGTH_SHORT).show();
+                        // ...
+                    }
+                });
+            }
+            else
+            {
+                tvEmail.setText("You are not signed in");
+                tvName.setText("signIn@myapp.com");
+            }
+
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+
+
         cal();
     }
 
@@ -100,6 +177,7 @@ public class searchDateRepair extends AppCompatActivity
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     repairs item = (repairs) parent.getItemAtPosition(position);
                     ImageView imageView = (ImageView) view.findViewById(R.id.grid_item_image);
+                    try{
                     Intent intent = new Intent(searchDateRepair.this, scrollViewRepair.class);
                     int[] screenLocation = new int[2];
                     imageView.getLocationOnScreen(screenLocation);
@@ -117,11 +195,18 @@ public class searchDateRepair extends AppCompatActivity
                             .putExtra("image", item.getImgUrl())
                             .putExtra("numberItems", item.getNumberItems())
                             .putExtra("repair", item.getRepair())
-                            .putExtra("repairOther", item.getRepairOther());
+                            .putExtra("repairOther", item.getRepairOther())
+                            .putExtra("ticketNum", item.getTicketNum());;
 
 
                     //Start details activity
                     startActivity(intent);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                        Toast.makeText(searchDateRepair.this, "There was an error switching screens", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
             mData = database.getReference("repairs");
@@ -178,8 +263,10 @@ public class searchDateRepair extends AppCompatActivity
                     String repair = ds.get(i).child("repair").getValue().toString();
                     String repairOther = ds.get(i).child("repairOther").getValue().toString();
                     String date = ds.get(i).child("date").getValue().toString();
+                    String ticketnum = ds.get(i).child("ticketnum").getValue().toString();
 
 
+                    item.setTicketNum(ticketnum);
                     item.setCost(cost);
                     item.setCellphone(cellphone);
                     item.setImgUrl(image);
@@ -189,7 +276,7 @@ public class searchDateRepair extends AppCompatActivity
                     item.setRepairOther(repairOther);
                     item.setDate(date);
 
-                    repairs rep = new repairs(date, cost, cellphone, image, name, numItems, repair, repairOther);
+                    repairs rep = new repairs(ticketnum,date, cost, cellphone, image, name, numItems, repair, repairOther);
 
                     mGridAdapter.add(rep);
 
@@ -197,7 +284,7 @@ public class searchDateRepair extends AppCompatActivity
 
                 if (cnt==0)
                 {
-                    Toast.makeText(this, "Not search resaults found", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Not search results found", Toast.LENGTH_LONG).show();
                 }
 
 
@@ -235,6 +322,7 @@ public class searchDateRepair extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+
         if (id == R.id.nav_addRepair) {
 
             startActivity(new Intent(getApplicationContext(), addrepair.class));
@@ -250,8 +338,22 @@ public class searchDateRepair extends AppCompatActivity
             startActivity(new Intent(getApplicationContext(), searchDateRepair.class));
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
+        }else if (id == R.id.nav_name_search) {
+            startActivity(new Intent(getApplicationContext(), nameSearch.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else if(id==R.id.nav_phone_search) {
+            startActivity(new Intent(getApplicationContext(), searchCellphone.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
 
-        } else if (id == R.id.nav_manage) {
+        } else if(id==R.id.nav_ticket_search)
+        {
+            startActivity(new Intent(getApplicationContext(), searchTicket.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+
 
         } else if (id == R.id.nav_login) {
             startActivity(new Intent(getApplicationContext(), login.class));

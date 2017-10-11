@@ -11,7 +11,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="matthewsware.lockstockandbarrell.viewRepairs"
-    tools:showIn="@layout/app_bar_view_repairs">
+    tools:showIn="@layout/app_bar_view_repairs"
+    android:background="@color/colorBackground">
 
 
     <GridView

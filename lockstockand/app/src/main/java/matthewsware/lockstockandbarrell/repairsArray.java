@@ -98,6 +98,7 @@ public class repairsArray extends ArrayAdapter<repairs> {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 Log.i("shit", exception.getMessage());
+
             }
         });
 

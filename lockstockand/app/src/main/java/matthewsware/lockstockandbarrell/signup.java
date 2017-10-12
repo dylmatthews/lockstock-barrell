@@ -75,6 +75,8 @@ public class signup extends AppCompatActivity
             mdref = FirebaseDatabase.getInstance().getReference().child("user");
             storageReference = FirebaseStorage.getInstance().getReference();
 
+            setTitle("Sign up");
+
 
             imageButton = (ImageButton) findViewById(R.id.ibProfilePic);
             etName = (EditText) findViewById(R.id.etName);
@@ -125,6 +127,7 @@ public class signup extends AppCompatActivity
 
 
             if (mUser != null) {
+                //this  sets email, name, profile pic
                 final String email = mUser.getEmail();
                 final String name = mUser.getDisplayName();
                 tvEmail.setText(email);
@@ -216,6 +219,7 @@ public class signup extends AppCompatActivity
 
     public void onSignUp(View view)
     {
+        //uplaods image, creates user profle
 
         final String email = etEmail.getText().toString();
         final String password = etPassword.getText().toString();
@@ -372,6 +376,12 @@ public class signup extends AppCompatActivity
 
         } else if (id == R.id.nav_signUp) {
             startActivity(new Intent(getApplicationContext(), signup.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else if (id==R.id.nav_help)
+        {
+            startActivity(new Intent(getApplicationContext(), help.class));
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         }

@@ -53,6 +53,7 @@ public class login extends AppCompatActivity
         setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Login screen");
 
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
@@ -82,7 +83,7 @@ public class login extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        try {
+        try { //this try catch sets email, name, profile pic
 
             View header = navigationView.getHeaderView(0);
 
@@ -110,7 +111,7 @@ public class login extends AppCompatActivity
                     e.printStackTrace();
                 }
                 final File finalLocalFile = localFile;
-                imgRef.getFile(localFile)
+                imgRef.getFile(localFile) //downloads image
                         .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
@@ -157,6 +158,7 @@ public class login extends AppCompatActivity
 
     public void onLogin(View view)
     {
+        //this method signs the user in
         final String email = etEmail.getText().toString();
         final String password = etPassword.getText().toString();
 
@@ -260,6 +262,12 @@ public class login extends AppCompatActivity
 
         } else if (id == R.id.nav_signUp) {
             startActivity(new Intent(getApplicationContext(), signup.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else if (id==R.id.nav_help)
+        {
+            startActivity(new Intent(getApplicationContext(), help.class));
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         }

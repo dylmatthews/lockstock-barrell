@@ -62,6 +62,8 @@ public class searchTicket extends AppCompatActivity
         etTicketNum = (EditText) findViewById(R.id.etTicketSearch);
         mAuth = FirebaseAuth.getInstance();
 
+        setTitle("Search by ticket number");
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -80,7 +82,7 @@ public class searchTicket extends AppCompatActivity
 
         mGridView.setAdapter(mGridAdapter);
 
-        try {
+        try { //this try catch sets email, name, profile pic
 
             View header = navigationView.getHeaderView(0);
 
@@ -103,6 +105,7 @@ public class searchTicket extends AppCompatActivity
 
                 File localFile = null;
                 try {
+
                     localFile = File.createTempFile("images", "jpg");
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -222,6 +225,7 @@ public class searchTicket extends AppCompatActivity
             for (DataSnapshot dataSnapshot1 : lstSnapshots) {
                 //Toast.makeText(this, dataSnapshot1.toString(), Toast.LENGTH_SHORT).show();
                 ds.add(dataSnapshot1);
+                //sorts data
 
             }
             int cnt =0;
@@ -338,6 +342,12 @@ public class searchTicket extends AppCompatActivity
 
         } else if (id == R.id.nav_signUp) {
             startActivity(new Intent(getApplicationContext(), signup.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else if (id==R.id.nav_help)
+        {
+            startActivity(new Intent(getApplicationContext(), help.class));
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         }

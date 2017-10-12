@@ -59,6 +59,8 @@ public class searchCellphone extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        setTitle("Search by cellphone number");
+
         etCellphone = (EditText) findViewById(R.id.etCellphoneSearch);
         mAuth = FirebaseAuth.getInstance();
 
@@ -79,7 +81,7 @@ public class searchCellphone extends AppCompatActivity
 
         mGridView.setAdapter(mGridAdapter);
 
-        try {
+        try { //this try catch sets email, name, profile pic
 
             View header = navigationView.getHeaderView(0);
 
@@ -223,6 +225,7 @@ public class searchCellphone extends AppCompatActivity
             for (DataSnapshot dataSnapshot1 : lstSnapshots) {
                 //Toast.makeText(this, dataSnapshot1.toString(), Toast.LENGTH_SHORT).show();
                 ds.add(dataSnapshot1);
+                //sorts data
 
             }
             int cnt =0;
@@ -342,7 +345,12 @@ public class searchCellphone extends AppCompatActivity
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         }
-
+        else if (id==R.id.nav_help)
+        {
+            startActivity(new Intent(getApplicationContext(), help.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
 
         return true;
     }

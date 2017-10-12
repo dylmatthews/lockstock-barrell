@@ -73,6 +73,8 @@ public class searchDateRepair extends AppCompatActivity
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         mAuth = FirebaseAuth.getInstance();
 
+        setTitle("Search by repair date");
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -91,6 +93,7 @@ public class searchDateRepair extends AppCompatActivity
         mGridView.setAdapter(mGridAdapter);
 
         try {
+            //this try catch sets email, name, profile pic
 
             View header = navigationView.getHeaderView(0);
 
@@ -245,6 +248,7 @@ public class searchDateRepair extends AppCompatActivity
             for (DataSnapshot dataSnapshot1 : lstSnapshots) {
                 //Toast.makeText(this, dataSnapshot1.toString(), Toast.LENGTH_SHORT).show();
                 ds.add(dataSnapshot1);
+                //sorts data
 
             }
             int cnt =0;
@@ -362,6 +366,12 @@ public class searchDateRepair extends AppCompatActivity
 
         } else if (id == R.id.nav_signUp) {
             startActivity(new Intent(getApplicationContext(), signup.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else if (id==R.id.nav_help)
+        {
+            startActivity(new Intent(getApplicationContext(), help.class));
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         }

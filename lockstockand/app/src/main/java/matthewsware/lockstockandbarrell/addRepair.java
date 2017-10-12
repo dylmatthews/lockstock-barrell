@@ -72,9 +72,10 @@ public class addrepair extends AppCompatActivity
         setContentView(R.layout.activity_addrepair);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Add a repair");
 
         mData = FirebaseDatabase.getInstance();
-        mRef= mData.getReference("repairs");
+        mRef= mData.getReference("repairs"); //sets reference for db
         refTicketNum = mData.getReference();
         mAuth = FirebaseAuth.getInstance();
 
@@ -89,7 +90,7 @@ public class addrepair extends AppCompatActivity
         storageReference = FirebaseStorage.getInstance().getReference();
 
         refTicketNum  = database.getReference("ticket number");
-        refTicketNum.addValueEventListener(new ValueEventListener() {
+        refTicketNum.addValueEventListener(new ValueEventListener() { //gets ticket number
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //  Toast.makeText(foundAnimal.this, dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
@@ -127,7 +128,7 @@ public class addrepair extends AppCompatActivity
             btnCamera.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //opens up dewfualt camera app
                     file = Uri.fromFile(getOutputMediaFile());
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
                     startActivityForResult(intent, 0);
@@ -142,6 +143,7 @@ public class addrepair extends AppCompatActivity
 
 
         try {
+            //this try catch sets email, name, profile pic
 
             View header = navigationView.getHeaderView(0);
 
@@ -168,7 +170,7 @@ public class addrepair extends AppCompatActivity
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                final File finalLocalFile = localFile;
+                final File finalLocalFile = localFile; //uplaods image here
                 imgRef.getFile(localFile)
                         .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
@@ -207,7 +209,7 @@ public class addrepair extends AppCompatActivity
             ArrayList<DataSnapshot> ds = new ArrayList<>();
             for (DataSnapshot dataSnapshot1 : lstSnapshots) {
                 //Toast.makeText(this, dataSnapshot1.toString(), Toast.LENGTH_SHORT).show();
-                ds.add(dataSnapshot1);
+                ds.add(dataSnapshot1); //sets firebase objects by last added
 
             }
 
@@ -435,6 +437,12 @@ public class addrepair extends AppCompatActivity
 
         } else if (id == R.id.nav_signUp) {
             startActivity(new Intent(getApplicationContext(), signup.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else if (id==R.id.nav_help)
+        {
+            startActivity(new Intent(getApplicationContext(), help.class));
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         }

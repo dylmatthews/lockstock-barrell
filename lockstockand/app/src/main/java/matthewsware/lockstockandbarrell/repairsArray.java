@@ -26,6 +26,8 @@ import static matthewsware.lockstockandbarrell.R.id;
  * Created by dylanmatthews on 2017/10/09.
  */
 
+//this class makes the grid view, downloads the image
+
 public class repairsArray extends ArrayAdapter<repairs> {
 
     private List<repairs> cardList = new ArrayList<repairs>();
@@ -75,6 +77,7 @@ public class repairsArray extends ArrayAdapter<repairs> {
 
         repairs card = getItem(position);
         viewHolder.imgUrl= card.getImgUrl();
+        //downloads image
       //  viewHolder.tv.setText("jdshjds");
         String ref = "repairs/" + viewHolder.imgUrl;
         storageRef.child(ref).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {

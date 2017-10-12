@@ -26,6 +26,10 @@
             android:id="@+id/nav_ticket_search"
             android:icon="@mipmap/ic_confirmation_number_black_24dp"
             android:title="Search Cellphone" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@mipmap/ic_help_black_24dp"
+            android:title="Help" />
 
     </group>
 

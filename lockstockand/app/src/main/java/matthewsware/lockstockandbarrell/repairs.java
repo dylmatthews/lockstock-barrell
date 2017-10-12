@@ -3,7 +3,7 @@ package matthewsware.lockstockandbarrell;
 /**
  * Created by dylanmatthews on 2017/10/09.
  */
-
+//get and set class
 public class repairs {
 
     private String name;

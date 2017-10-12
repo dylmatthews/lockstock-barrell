@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_help"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="matthewsware.lockstockandbarrell.help"
+    tools:showIn="@layout/app_bar_help"
+    android:background="@color/colorBackground">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text"
+        android:text="Welcome to lock stock and barrels app.\nOn here you'll be able to make and account, sign in, login, set a profile pics.\nYou'll be able to upload a repair to the database, with a picture, query it based on the different search screens.\n\nThis app does use a lot of data!! please be ensured to be connected to a fast internet connect, The wifi on campus is suitable for this.\n\nThere is a navigation bar to get to the different screens. "/>
+
+</RelativeLayout>

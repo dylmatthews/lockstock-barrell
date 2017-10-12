@@ -59,6 +59,8 @@ public class viewRepairs extends AppCompatActivity
         mGridView = (GridView) findViewById(R.id.gridView);
         mAuth = FirebaseAuth.getInstance();
 
+        setTitle("View all repairs");
+
 
         mGridData = new ArrayList<>();
         mGridAdapter = new repairsArray(this, R.layout.activity_view_repairs);
@@ -158,7 +160,7 @@ public class viewRepairs extends AppCompatActivity
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                final File finalLocalFile = localFile;
+                final File finalLocalFile = localFile; //downloads image here
                 imgRef.getFile(localFile)
                         .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
@@ -309,6 +311,12 @@ public class viewRepairs extends AppCompatActivity
 
         } else if (id == R.id.nav_signUp) {
             startActivity(new Intent(getApplicationContext(), signup.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else if (id==R.id.nav_help)
+        {
+            startActivity(new Intent(getApplicationContext(), help.class));
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         }

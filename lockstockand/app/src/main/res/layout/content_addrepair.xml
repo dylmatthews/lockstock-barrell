@@ -66,9 +66,20 @@
                 android:textColorHint="@color/material_hint"/>
             </android.support.design.widget.TextInputLayout>
 
+            <Button
+                android:id="@+id/btnCamera"
+                android:layout_below="@+id/input_layout_repair"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:background="@color/button"
+                android:textColor="@color/text"
+                android:text="Open Camera"
+                />
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_repair_other"
-                android:layout_below="@+id/input_layout_repair"
+                android:layout_below="@+id/btnCamera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text"
@@ -162,16 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent" />
 
-            <Button
-                android:id="@+id/btnCamera"
-                android:layout_below="@+id/imageView"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:background="@color/button"
-                android:textColor="@color/text"
-                android:text="Open Camera"
-                />
+
 
                     <Button
                         android:text="Insert"

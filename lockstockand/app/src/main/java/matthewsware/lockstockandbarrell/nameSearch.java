@@ -65,6 +65,8 @@ public class nameSearch extends AppCompatActivity
         etName = (EditText) findViewById(R.id.etNameSearch);
         mAuth = FirebaseAuth.getInstance();
 
+        setTitle("Search by name");
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -83,7 +85,7 @@ public class nameSearch extends AppCompatActivity
 
         mGridView.setAdapter(mGridAdapter);
 
-        try {
+        try {  //this try catch sets email, name, profile pic
 
             View header = navigationView.getHeaderView(0);
 
@@ -220,6 +222,7 @@ public class nameSearch extends AppCompatActivity
             for (DataSnapshot dataSnapshot1 : lstSnapshots) {
                 //Toast.makeText(this, dataSnapshot1.toString(), Toast.LENGTH_SHORT).show();
                 ds.add(dataSnapshot1);
+                //sorts data
 
             }
             int cnt =0;
@@ -229,6 +232,7 @@ public class nameSearch extends AppCompatActivity
                 if ((ds.get(i).child("name").getValue().toString()).contains(name)) {
                     cnt++;
                     item = new repairs();
+                    //gets data
 
                     String cost = ds.get(i).child("cost").getValue().toString();
                     String cellphone = ds.get(i).child("cellphone").getValue().toString();
@@ -340,8 +344,12 @@ public class nameSearch extends AppCompatActivity
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         }
-
-
+        else if (id==R.id.nav_help)
+        {
+            startActivity(new Intent(getApplicationContext(), help.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
 
         return true;
     }
